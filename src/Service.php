@@ -2,13 +2,13 @@
 
 namespace App;
 
-class Client
+class Service
 {
-    private $client;
+    private $http;
 
     public function __construct($httpClient)
     {
-        $this->client = $httpClient;
+        $this->http = $httpClient;
     }
 
     public function authorization($subdomain, $login, $hash)
@@ -18,7 +18,7 @@ class Client
             'USER_LOGIN' => $login,
             'USER_HASH' => $hash,
         ];
-        $response = $this->client->post($link, [
+        $response = $this->http->post($link, [
             'body' => json_encode($user),
         ]);
         $code = $response->getStatusCode();
@@ -26,9 +26,10 @@ class Client
         if ($code != 200 && $code != 204) {
             throw new Exception($code);
         }
-        print_r(json_decode($response->getBody())); 
+        print_r(json_decode($response->getBody(), true)); 
         return true;
     }
 
+   
     
 }

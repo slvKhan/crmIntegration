@@ -1,6 +1,6 @@
 <?php 
 
-use App\Client;
+use App\Service;
 
 require_once __DIR__.'/../vendor/autoload.php';
 
@@ -12,7 +12,7 @@ $headers =  [
 ];
 
 $cookieJar =  new GuzzleHttp\Cookie\FileCookieJar($cookiePath, TRUE);
-$app = new Client(new GuzzleHttp\Client(['cookies' => $cookieJar, 'headers' => $headers]));
+$app = new Service(new GuzzleHttp\Client(['cookies' => $cookieJar, 'headers' => $headers]));
 
 try {
     $app->authorization(...$user);
@@ -20,5 +20,4 @@ try {
 } catch (Exception $e) {
     echo 'Авторизация провалилась!';
 }
-
 
