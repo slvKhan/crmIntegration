@@ -11,6 +11,11 @@ class Lead
         $this->leads = $leads['_embedded']['items'];
     }
 
+    public function toArray()
+    {
+        return $this->leads;
+    }
+
     public function getLeadsWithoutTasks()
     {
         return array_filter($this->leads, function ($lead) {
@@ -18,8 +23,13 @@ class Lead
         });
     }
 
-    public function toArray()
+    public static function listOfId($leads)
     {
-        return $this->leads;
+        return array_map(function ($lead) {
+            return [
+                'element_id' => $lead['id'],
+                'responsible_user_id' => $lead['responsible_user_id']
+            ];
+        }, $leads);
     }
 }

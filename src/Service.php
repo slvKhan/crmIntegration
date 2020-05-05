@@ -14,7 +14,7 @@ class Service
 
     /**
      * 
-     * returns true with succes authorization
+     * returns true with authorization succes 
      */
     public function authorization($user)
     {
@@ -57,10 +57,15 @@ class Service
             'body' => json_encode($postBody),
         ]);
         $code = $response->getStatusCode();
+        $this->check($code);
+        return json_decode($response->getBody(), true);
+    }
+
+    private function check($code)
+    {
         if ($code != 200 && $code != 204) {
             throw new Exception($code);
         }
-        return json_decode($response->getBody(), true);
     }
 
     /**

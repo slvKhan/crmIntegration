@@ -22,4 +22,5 @@ class User
     {
         return $this->user['subdomain'];
     }
+
 }
