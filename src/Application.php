@@ -13,18 +13,19 @@ class Application
         'addTaskSucces' => "Задачи добавленны \n",
         'empty' => "У всех сделок есть задачи \n"
     ];
-    private $userData;
+    private $filePath = __DIR__.'/../bin/user.json';
 
-    public function __construct(Service $service, array $userData)
+    public function __construct(object $service)
     {
         $this->service = $service;
-        $this->userData = $userData;
     }
 
     public function run(): void
     {
+        $userData = $this->getUser();
+
         try {
-            $succes = $this->service->authorization(new models\User($this->userData));
+            $succes = $this->service->authorization(new models\User($userData));
             echo $succes ? $this->messages['authSucces'] : $this->messages['authFaild'];
             $leads = $this->service->listOf('leads');
             echo $this->messages['fetchLeads'];
@@ -58,5 +59,11 @@ class Application
         return array_map(function ($lead) {
             return models\Task::taskForEmptyDeal($lead, time());
         }, $emptyLeadsID);
+    }
+
+    private function getUser(): array
+    {
+        $raw = file_get_contents($this->filePath);
+        return json_decode($raw, true);
     }
 }
