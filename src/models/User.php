@@ -10,7 +10,7 @@ class User
         'hash' => '0ff60cca81234b0532ed48e5f7597c6d00eb1628'
     ];
 
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'USER_LOGIN' => $this->user['login'],
@@ -18,9 +18,8 @@ class User
         ];
     }
 
-    public function getSubdomain()
+    public function getSubdomain(): string
     {
         return $this->user['subdomain'];
     }
-
 }

@@ -7,16 +7,12 @@ class Service
     private $http;
     private $subdomain;
 
-    public function __construct($httpClient)
+    public function __construct(object $httpClient)
     {
         $this->http = $httpClient;
     }
 
-    /**
-     * 
-     * returns true with authorization succes 
-     */
-    public function authorization($user)
+    public function authorization(models\User $user): bool
     {
         $this->subdomain = $user->getSubdomain();
         $link = 'https://' . $this->subdomain . '.amocrm.ru/private/api/auth.php?type=json';
@@ -24,34 +20,34 @@ class Service
         return $responseBody['response']['auth'];
     }
 
-    public function listOf($entity)
+    public function listOf(string $entity): object
     {
         $link = 'https://' . $this->subdomain . '.amocrm.ru/api/v2/' . $entity;
         $response = $this->get($link);
         return Factory::collectionOf($entity, $response);
     }
 
-    public function addLeads($leads)
+    public function addLeads(array $leads): array
     {
         $postBody = ['add' => $leads];
         $link = 'https://' . $this->subdomain . '.amocrm.ru/api/v2/leads';
         return $this->post($link, $postBody);
     }
 
-    public function addTasks($tasks)
+    public function addTasks(array $tasks): array
     {
         $postBody = ['add' => $tasks];
         $link = 'https://' . $this->subdomain . '.amocrm.ru/api/v2/tasks';
         return $this->post($link, $postBody);
     }
 
-    private function get($link)
+    private function get(string $link): array
     {
         $response = $this->http->get($link);
         return json_decode($response->getBody(), true);
     }
 
-    private function post($link, $postBody)
+    private function post(string $link, array $postBody): array
     {
         $response = $this->http->post($link, [
             'body' => json_encode($postBody),
@@ -61,17 +57,12 @@ class Service
         return json_decode($response->getBody(), true);
     }
 
-    private function check($code)
+    private function check(int $code)
     {
         if ($code != 200 && $code != 204) {
             throw new Exception($code);
         }
     }
-
-    /**
-     * didnt work
-     * filter/tasks	Выбрать сделки без задач – 1
-     */
 
     public function listLeadsFilter()
     {
@@ -80,5 +71,4 @@ class Service
         $responseBody = json_decode($response->getBody(), true);
         return $responseBody;
     }
-    
 }

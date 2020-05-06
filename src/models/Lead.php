@@ -6,30 +6,25 @@ class Lead
 {
     private $leads;
 
-    public function __construct($leads)
+    public function __construct(array $leads)
     {
         $this->leads = $leads['_embedded']['items'];
     }
 
-    public function toArray()
+    public function all()
     {
         return $this->leads;
     }
 
-    public function getLeadsWithoutTasks()
+    public function filter(callable $fn)
     {
-        return array_filter($this->leads, function ($lead) {
-            return $lead['closest_task_at'] === 0;
-        });
+        $this->leads = array_filter($this->leads, $fn);
+        return $this;
     }
 
-    public static function listOfId($leads)
+    public function map(callable $fn)
     {
-        return array_map(function ($lead) {
-            return [
-                'element_id' => $lead['id'],
-                'responsible_user_id' => $lead['responsible_user_id']
-            ];
-        }, $leads);
+        $this->leads = array_map($fn, $this->leads);
+        return $this;
     }
 }

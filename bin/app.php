@@ -29,7 +29,18 @@ try {
     echo $succes ? $messages['authSucces'] : $messages['authFaild'];
     $leads = $app->listOf('leads');
     echo $messages['fetchLeads'];
-    $emptyLeadsID = models\Lead::listOfId($leads->getLeadsWithoutTasks());
+
+    $emptyLeadsID = $leads
+        ->filter(function ($lead) {
+            return $lead['closest_task_at'] === 0;
+        })
+        ->map(function ($lead) {
+            return [
+                'element_id' => $lead['id'],
+                'responsible_user_id' => $lead['responsible_user_id']
+            ];
+        })
+        ->all();
 
     if (count($emptyLeadsID) === 0) {
         echo $messages['empty'];
@@ -37,12 +48,11 @@ try {
     }
 
     $tasksList = array_map(function ($lead) {
-        return models\Task::TaskForEmptyDeal($lead['element_id'], $lead['responsible_user_id']);
+        return models\Task::taskForEmptyDeal($lead);
     }, $emptyLeadsID);
 
     $app->addTasks($tasksList);
     echo $messages['addTaskSucces'];
-
 } catch (Exception $e) {
     echo $messages['connectFail'] . $e;
 }

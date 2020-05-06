@@ -1,10 +1,10 @@
-<?php 
+<?php
 
 namespace App;
 
 class Factory
 {
-    public static function collectionOf($entity, $args)
+    public static function collectionOf(string $entity, array $args): object
     {
         $mapping = [
             'leads' => models\Lead::class,
