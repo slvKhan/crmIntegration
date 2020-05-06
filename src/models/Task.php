@@ -16,9 +16,9 @@ class Task
         return $this->tasks;
     }
 
-    public static function taskForEmptyLead(array $lead): array
+    public static function taskForEmptyLead(array $lead, int $currentTime): array
     {
-        $tomorrow = time() + (24 * 60 * 60);
+        $tomorrow = $currentTime + (24 * 60 * 60);
         return [
             'element_id' => $lead['element_id'],
             'element_type' => 2,

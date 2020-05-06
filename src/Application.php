@@ -13,16 +13,18 @@ class Application
         'addTaskSucces' => "Задачи добавленны \n",
         'empty' => "У всех сделок есть задачи \n"
     ];
+    private $userData;
 
-    public function __construct(Service $service)
+    public function __construct(Service $service, array $userData)
     {
         $this->service = $service;
+        $this->userData = $userData;
     }
 
     public function run(): void
     {
         try {
-            $succes = $this->service->authorization(new models\User());
+            $succes = $this->service->authorization(new models\User($this->userData));
             echo $succes ? $this->messages['authSucces'] : $this->messages['authFaild'];
             $leads = $this->service->listOf('leads');
             echo $this->messages['fetchLeads'];
@@ -54,7 +56,7 @@ class Application
         }
 
         return array_map(function ($lead) {
-            return models\Task::taskForEmptyDeal($lead);
+            return models\Task::taskForEmptyDeal($lead, time());
         }, $emptyLeadsID);
     }
 }
