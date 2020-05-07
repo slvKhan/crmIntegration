@@ -13,7 +13,7 @@ class Application
         'addTaskSucces' => "Задачи добавленны \n",
         'empty' => "У всех сделок есть задачи \n"
     ];
-    private $filePath = __DIR__.'/../bin/user.json';
+    private $filePath = __DIR__.'/../bin/userData.json';
 
     public function __construct(object $service)
     {
