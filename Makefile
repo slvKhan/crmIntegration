@@ -1,5 +1,5 @@
 lint:
-	./vendor/bin/phpcs -- --standard=PSR2 src bin tests
+	./vendor/bin/phpcs -- --standard=PSR2 src bin
 
 test:
 	./vendor/bin/phpunit tests
