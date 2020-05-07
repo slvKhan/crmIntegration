@@ -1,3 +1,4 @@
 vendor/
+user.json
 *.txt
-/bin/user.json
+
