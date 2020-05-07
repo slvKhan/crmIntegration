@@ -11,7 +11,7 @@ class Task
         $this->tasks = $tasks['_embedded']['items'];
     }
 
-    public function all()
+    public function all(): array
     {
         return $this->tasks;
     }
