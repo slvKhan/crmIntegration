@@ -6,6 +6,6 @@ class ServiceTest extends TestCase
 {
     public function testGet()
     {
-
+        $this->assertTrue(true);
     }
 }

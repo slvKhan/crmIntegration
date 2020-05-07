@@ -6,6 +6,6 @@ class ApplicationTest extends TestCase
 {
     public function testGetUser()
     {
-        
+        $this->assertTrue(true);
     }
 }
